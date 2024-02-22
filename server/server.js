@@ -3,13 +3,13 @@ const app = express();
 const cors = require("cors");
 const pool = require("./db");
 
-//middleware
+// middleware
 app.use(cors());
 app.use(express.json()); //req.body
 
 //ROUTES//
 
-//create a todo
+// create a todo
 
 app.post("/todos", async (req, res) => {
   try {
@@ -25,7 +25,7 @@ app.post("/todos", async (req, res) => {
   }
 });
 
-//get all todos
+// get all todos
 
 app.get("/todos", async (req, res) => {
   try {
@@ -36,7 +36,7 @@ app.get("/todos", async (req, res) => {
   }
 });
 
-//get a todo
+// get a todo
 
 app.get("/todos/:id", async (req, res) => {
   try {
@@ -51,7 +51,7 @@ app.get("/todos/:id", async (req, res) => {
   }
 });
 
-//update a todo
+// update a todo
 
 app.put("/todos/:id", async (req, res) => {
   try {
@@ -68,7 +68,7 @@ app.put("/todos/:id", async (req, res) => {
   }
 });
 
-//delete a todo
+// delete a todo
 
 app.delete("/todos/:id", async (req, res) => {
   try {
