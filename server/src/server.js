@@ -82,6 +82,10 @@ app.delete("/todos/:id", async (req, res) => {
   }
 });
 
+app.get("/healthcheck", (req, res) => {
+  res.sendStatus(200);
+})
+
 app.listen(5000, () => {
   console.log("server has started on port 5000");
 });

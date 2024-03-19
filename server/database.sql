@@ -16,3 +16,6 @@ COMMANDS:
 "\dt" to find table relations
 
 */
+
+
+-- Schema migrations

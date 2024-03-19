@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from "react";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const InputTodo = () => {
   const [description, setDescription] = useState("");
 
@@ -7,7 +9,7 @@ const InputTodo = () => {
     e.preventDefault();
     try {
       const body = { description };
-      await fetch("http://localhost:5000/todos", {
+      await fetch(`${apiUrl}/todos/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)

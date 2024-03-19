@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from "react";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const EditTodo = ({ todo }) => {
   const [description, setDescription] = useState(todo.description);
 
@@ -10,7 +12,7 @@ const EditTodo = ({ todo }) => {
     try {
       const body = { description };
       await fetch(
-        `http://localhost:5000/todos/${todo.todo_id}`,
+        `${apiUrl}/todos/${todo.todo_id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -35,9 +37,6 @@ const EditTodo = ({ todo }) => {
         Edit
       </button>
 
-      {/* 
-        id = id10
-      */}
       <div
         class="modal"
         id={`id${todo.todo_id}`}
