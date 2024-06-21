@@ -1,26 +1,25 @@
 import React, { Fragment, useState } from "react";
+import axios from "axios";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const baseUrl =
+  process.env.REACT_APP_ECS_SERVICE_URL || `http://localhost:5000`;
 
-const EditTodo = ({ todo }) => {
+const EditTodo = ({ todo, onUpdateTodo }) => {
   const [description, setDescription] = useState(todo.description);
 
-  //edit description function
-
-  const updateDescription = async e => {
+  // Edit description function
+  const updateDescription = async (e) => {
+    console.log("Inside updateDescription");
     e.preventDefault();
+    console.log("After preventDefault");
     try {
       const body = { description };
-      await fetch(
-        `${apiUrl}/todos/${todo.todo_id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        }
-      );
-
-      window.location = "/";
+      console.log("Before axios.put");
+      await axios.put(`${baseUrl}/todos/${todo.id}`, body);
+      console.log("Before onUpdateTodo");
+      await onUpdateTodo();
+      console.log("After onUpdateTodo");
+      setDescription(description);
     } catch (err) {
       console.error(err.message);
     }
@@ -30,25 +29,26 @@ const EditTodo = ({ todo }) => {
     <Fragment>
       <button
         type="button"
-        class="btn btn-warning"
+        className="btn btn-warning"
+        id="editBtn"
         data-toggle="modal"
-        data-target={`#id${todo.todo_id}`}
+        data-target={`#id${todo.id}`}
       >
         Edit
       </button>
 
       <div
-        class="modal"
-        id={`id${todo.todo_id}`}
+        className="modal"
+        id={`id${todo.id}`}
         onClick={() => setDescription(todo.description)}
       >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Edit Todo</h4>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h4 className="modal-title">Edit Todo</h4>
               <button
                 type="button"
-                class="close"
+                className="close"
                 data-dismiss="modal"
                 onClick={() => setDescription(todo.description)}
               >
@@ -56,27 +56,28 @@ const EditTodo = ({ todo }) => {
               </button>
             </div>
 
-            <div class="modal-body">
+            <div className="modal-body">
               <input
                 type="text"
                 className="form-control"
                 value={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
 
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-warning"
+                className="btn btn-warning"
+                id="editDoneBtn"
                 data-dismiss="modal"
-                onClick={e => updateDescription(e)}
+                onClick={(e) => updateDescription(e)}
               >
-                Edit
+                Done
               </button>
               <button
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-danger"
                 data-dismiss="modal"
                 onClick={() => setDescription(todo.description)}
               >

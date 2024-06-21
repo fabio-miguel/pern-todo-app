@@ -1,47 +1,17 @@
 import React, { Fragment, useEffect, useState } from "react";
-
 import EditTodo from "./EditTodo";
+import axios from "axios";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const baseUrl =
+  process.env.REACT_APP_ECS_SERVICE_URL || `http://localhost:5000`;
 
-const ListTodos = () => {
-  const [todos, setTodos] = useState([]);
-
-  //delete todo function
-
-  const deleteTodo = async id => {
-    try {
-      await fetch(`${apiUrl}/todos/${id}`, {
-        method: "DELETE"
-      });
-
-      setTodos(todos.filter(todo => todo.todo_id !== id));
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const getTodos = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/todos");
-      const jsonData = await response.json();
-
-      setTodos(jsonData);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  useEffect(() => {
-    getTodos();
-  }, []);
-
+const ListTodos = ({ todos, deleteTodo, onUpdateTodo }) => {
   console.log(todos);
-
+  console.log("---------------");
   return (
     <Fragment>
       {" "}
-      <table class="table mt-5 text-center">
+      <table className="table mt-5 text-center">
         <thead>
           <tr>
             <th>Description</th>
@@ -55,11 +25,11 @@ const ListTodos = () => {
             <td>Doe</td>
             <td>john@example.com</td>
           </tr> */}
-          {todos.map(todo => (
-            <tr key={todo.todo_id}>
-              <td>{todo.description}</td>
+          {todos.map((todo) => (
+            <tr key={`${todo.todo_id}`}>
+              <td data-testid="todo-description">{todo.description}</td>
               <td>
-                <EditTodo todo={todo} />
+                <EditTodo todo={todo} onUpdateTodo={onUpdateTodo} />
               </td>
               <td>
                 <button

@@ -1,91 +1,107 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
-const pool = require("./db");
 
-// middleware
-app.use(cors());
-app.use(express.json()); //req.body
+function createServer(pool) {
+  const app = express();
 
-//ROUTES//
+  // Middleware
+  app.use(cors());
+  app.use(express.json());
 
-// create a todo
+  /* ROUTES - CRUD Methods */
 
-app.post("/todos", async (req, res) => {
-  try {
-    const { description } = req.body;
-    const newTodo = await pool.query(
-      "INSERT INTO todo (description) VALUES($1) RETURNING *",
-      [description]
-    );
-    console.log("todo was created")
-    res.json(newTodo.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+  // Create a todo
+  app.post("/todos", async (req, res) => {
+    console.log("creating todo");
+    try {
+      const { description } = req.body;
+      const newTodo = await pool.query(
+        "INSERT INTO todo (description) VALUES($1) RETURNING *",
+        [description]
+      );
+      console.log("todo was created");
+      res
+        .status(201)
+        .location(`/todos/${newTodo.rows[0].id}`)
+        .json(newTodo.rows[0]);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
-// get all todos
+  // Read all todos
+  app.get("/todos", async (req, res) => {
+    try {
+      const allTodos = await pool.query("SELECT * FROM todo");
+      res.status(200).json(allTodos.rows);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
-app.get("/todos", async (req, res) => {
-  try {
-    const allTodos = await pool.query("SELECT * FROM todo");
-    res.json(allTodos.rows);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+  // Read a todo
+  app.get("/todos/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const todo = await pool.query("SELECT * FROM todo WHERE id = $1", [id]);
 
-// get a todo
+      if (todo.rows.length === 0) {
+        res.status(404).json("Todo not found");
+      } else {
+        res.status(200).json(todo.rows[0]);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
-app.get("/todos/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
-      id
-    ]);
+  // Update a todo
+  app.put("/todos/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
 
-    res.json(todo.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+      if (isNaN(parseInt(id))) {
+        console.log("Invalid id");
+        res.status(400).json("Invalid id");
+        return;
+      }
 
-// update a todo
+      const { description } = req.body;
+      const updateTodo = await pool.query(
+        "UPDATE todo SET description = $1 WHERE id = $2",
+        [description, id]
+      );
 
-app.put("/todos/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { description } = req.body;
-    const updateTodo = await pool.query(
-      "UPDATE todo SET description = $1 WHERE todo_id = $2",
-      [description, id]
-    );
+      if (updateTodo.rowCount === 0) {
+        res.status(404).json("Todo not found");
+        return;
+      }
 
-    res.json("Todo was updated!");
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+      res.json("Todo was updated!");
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
-// delete a todo
+  // Delete a todo
+  app.delete("/todos/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleteTodo = await pool.query("DELETE FROM todo WHERE id = $1", [
+        id,
+      ]);
 
-app.delete("/todos/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deleteTodo = await pool.query("DELETE FROM todo WHERE todo_id = $1", [
-      id
-    ]);
-    res.json("Todo was deleted!");
-  } catch (err) {
-    console.log(err.message);
-  }
-});
+      res.status(200).json("Todo was deleted!");
+    } catch (err) {
+      console.log(err.message);
+    }
+  });
 
-app.get("/healthcheck", (req, res) => {
-  res.sendStatus(200);
-})
+  app.get("/healthcheck", (req, res) => {
+    res.sendStatus(200);
+  });
 
-app.listen(5000, () => {
-  console.log("server has started on port 5000");
-});
+  return app;
+}
+
+module.exports = createServer;

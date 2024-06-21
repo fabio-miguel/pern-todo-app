@@ -1,13 +1,25 @@
-const Pool = require("pg").Pool;
+const { Pool } = require("pg");
 
-const pool = new Pool({
-  user: "postgres",
-  password: process.env.DB_PASSWORD,
-  host: "localhost",
-  port: 5433,
-  database: "perntodo"
-});
+let pool;
 
-console.log(process.env.DB_PASSWORD)
+function connectDb() {
+  if (!pool) {
+    pool = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      database: process.env.DB_NAME,
+    });
+  }
+  return pool;
+}
 
-module.exports = pool;
+async function disconnectDb() {
+  if (pool) {
+    await pool.end();
+    pool = null;
+  }
+}
+
+module.exports = { connectDb, disconnectDb };
