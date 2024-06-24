@@ -44,10 +44,33 @@ function App() {
     getTodos();
   };
 
-  // Re-fetch todos after an update
-  const onUpdateTodo = async () => {
-    await getTodos();
-    console.log("Todo Updated");
+  // // Optimistically update a todo's description & re-fetch todos
+  const onUpdateTodo = async (id, newDescription) => {
+    // Temporarily store the current state in case we need to revert
+    const oldTodos = [...todos];
+    console.log(newDescription);
+    console.log(id);
+
+    // Optimistically update the UI
+    const updatedTodos = oldTodos.map((todo) => {
+      if (todo.id === id) {
+        console.log("Found the todo to update");
+        return { ...todo, description: newDescription };
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+    try {
+      // Attempt to update the todo on the server
+      await axios.put(`${baseUrl}/todos/${id}`, {
+        description: newDescription,
+      });
+      console.log("Todo description updated successfully on the server.");
+    } catch (err) {
+      console.error(err.message);
+      // Revert to the old todos if the server call fails
+      setTodos(oldTodos);
+    }
   };
 
   return (

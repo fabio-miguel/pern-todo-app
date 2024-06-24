@@ -26,7 +26,7 @@ const ListTodos = ({ todos, deleteTodo, onUpdateTodo }) => {
             <td>john@example.com</td>
           </tr> */}
           {todos.map((todo) => (
-            <tr key={`${todo.todo_id}`}>
+            <tr key={`${todo.id}`}>
               <td data-testid="todo-description">{todo.description}</td>
               <td>
                 <EditTodo todo={todo} onUpdateTodo={onUpdateTodo} />
@@ -34,7 +34,7 @@ const ListTodos = ({ todos, deleteTodo, onUpdateTodo }) => {
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() => deleteTodo(todo.todo_id)}
+                  onClick={() => deleteTodo(todo.id)}
                 >
                   Delete
                 </button>

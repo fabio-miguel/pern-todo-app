@@ -8,21 +8,9 @@ const EditTodo = ({ todo, onUpdateTodo }) => {
   const [description, setDescription] = useState(todo.description);
 
   // Edit description function
-  const updateDescription = async (e) => {
-    console.log("Inside updateDescription");
+  const updateDescription = async (e, id, newDescription) => {
     e.preventDefault();
-    console.log("After preventDefault");
-    try {
-      const body = { description };
-      console.log("Before axios.put");
-      await axios.put(`${baseUrl}/todos/${todo.id}`, body);
-      console.log("Before onUpdateTodo");
-      await onUpdateTodo();
-      console.log("After onUpdateTodo");
-      setDescription(description);
-    } catch (err) {
-      console.error(err.message);
-    }
+    await onUpdateTodo(id, newDescription);
   };
 
   return (
@@ -71,7 +59,7 @@ const EditTodo = ({ todo, onUpdateTodo }) => {
                 className="btn btn-warning"
                 id="editDoneBtn"
                 data-dismiss="modal"
-                onClick={(e) => updateDescription(e)}
+                onClick={(e) => updateDescription(e, todo.id, description)}
               >
                 Done
               </button>
