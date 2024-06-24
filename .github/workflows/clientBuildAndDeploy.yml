@@ -1,11 +1,17 @@
-name: Client build and deploy
+# name: Client build and deploy
 
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - "client/**"
+
+name: Run e2e tests
 on:
-  push:
+  pull_request:
     branches:
       - main
-    paths:
-      - "client/**"
 
 jobs:
   deploy:
