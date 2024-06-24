@@ -34,6 +34,7 @@ const ListTodos = ({ todos, deleteTodo, onUpdateTodo }) => {
               <td>
                 <button
                   className="btn btn-danger"
+                  id="deleteBtn"
                   onClick={() => deleteTodo(todo.id)}
                 >
                   Delete

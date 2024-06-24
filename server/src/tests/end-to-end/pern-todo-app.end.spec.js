@@ -7,7 +7,6 @@ test.beforeEach(async ({ page }) => {
 test.describe("PERN Todo App", () => {
   test("should add a todo", async ({ page }) => {
     await page.fill("#todoInput", "Test Todo");
-    await page.pause();
     await page.click("#addTodoBtn");
     await expect(page.getByTestId("todo-description")).toHaveText("Test Todo", {
       timeout: 5000,
@@ -15,12 +14,17 @@ test.describe("PERN Todo App", () => {
   });
 
   test("should edit a todo", async ({ page }) => {
-    await page.pause();
     await page.click("#editBtn");
     await page.fill(".modal-body input", "Updated Test Todo");
     await page.click("#editDoneBtn");
     await expect(page.getByTestId("todo-description")).toHaveText(
       "Updated Test Todo"
     );
+  });
+
+  test("should delete a todo", async ({ page }) => {
+    await page.pause();
+    await page.click("#deleteBtn");
+    await expect(page.getByTestId("todo-description")).toHaveCount(0);
   });
 });
