@@ -40,7 +40,7 @@ jobs:
         # Run E2E tests
       - name: Run E2E tests
         run: npx playwright test
-        working-directory: ../server
+        working-directory: ./server
 
         # Deploys your application to AWS S3
       # - name: Deploy
