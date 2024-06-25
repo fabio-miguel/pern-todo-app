@@ -1,9 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import EditTodo from "./EditTodo";
-import axios from "axios";
-
-const baseUrl =
-  process.env.REACT_APP_ECS_SERVICE_URL || `http://localhost:5000`;
 
 const ListTodos = ({ todos, deleteTodo, onUpdateTodo }) => {
   console.log(todos);
@@ -20,11 +16,6 @@ const ListTodos = ({ todos, deleteTodo, onUpdateTodo }) => {
           </tr>
         </thead>
         <tbody>
-          {/*<tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
-          </tr> */}
           {todos.map((todo) => (
             <tr key={`${todo.id}`}>
               <td data-testid="todo-description">{todo.description}</td>

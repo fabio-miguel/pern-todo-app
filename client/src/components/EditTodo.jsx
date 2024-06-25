@@ -1,8 +1,4 @@
 import React, { Fragment, useState } from "react";
-import axios from "axios";
-
-const baseUrl =
-  process.env.REACT_APP_ECS_SERVICE_URL || `http://localhost:5000`;
 
 const EditTodo = ({ todo, onUpdateTodo }) => {
   const [description, setDescription] = useState(todo.description);
