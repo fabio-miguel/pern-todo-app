@@ -25,8 +25,7 @@ module.exports = defineConfig({
   globalTeardown: "./playwrightTeardown.js",
   use: {
     trace: "on-first-retry",
-    /* Playwright will run the browsers in a non-headless mode, i.e., with a graphical user interface (GUI). */
-    headless: false,
+    headless: true,
   },
 
   /* Configure projects for major browsers */
