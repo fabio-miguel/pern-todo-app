@@ -29,9 +29,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.x
-        # Installs your project dependencies using npm ci
-      - name: Install dependencies
+        # Installs your project dependencies on client directory using npm ci
+      - name: Install client dependencies
         run: npm ci
+
+        - name: Install server dependencies
+        run: npm ci
+        working-directory: ../server
 
         # Builds your application using your package.json's build script
       - name: Build app
@@ -40,7 +44,7 @@ jobs:
         # Run E2E tests
       - name: Run E2E tests
         run: npx playwright test
-        working-directory: ./server
+        working-directory: ../server
 
         # Deploys your application to AWS S3
       # - name: Deploy
