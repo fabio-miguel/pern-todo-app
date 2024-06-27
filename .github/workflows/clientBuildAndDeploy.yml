@@ -34,14 +34,14 @@ jobs:
 
       - name: Install server dependencies
         run: npm ci
-        working-directory: ../server
+        working-directory: server
 
       - name: Build app
         run: npm run build
 
       - name: Run E2E tests
         run: npx playwright test
-        working-directory: ../server
+        working-directory: server
 
         # Deploys your application to AWS S3
       # - name: Deploy
