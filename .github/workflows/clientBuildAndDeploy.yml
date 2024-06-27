@@ -39,6 +39,10 @@ jobs:
       - name: Build app
         run: npm run build
 
+      - name: Install Playwright browsers
+        run: npx playwright install
+        working-directory: server
+
       - name: Run E2E tests
         run: npx playwright test
         working-directory: server
