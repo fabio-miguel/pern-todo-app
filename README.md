@@ -4,31 +4,25 @@ This is a full-stack Todo application. The focus of this project was Fullstack &
 
 This to-do application used the PERN stack (PostgreSQL, Express, React and Node.js) for development.
 
-Client side is hosted on AWS.
+- Built a full-stack Todo app using TDD in AWS.
+- Frontend hosted in an S3 bucket.
+- CloudFront used as CDN service to cache website to localised nodes.
+- Used Docker to configure and build a lightweight image.
+- Deployed Docker image on ECR.
+- Autoscaling ECS cluster to accommodate changes to traffic.
+- Highly available by being deployed across multiple availability zones.
+- Integrated a Load Balancer to manage traffic to any given node.
+- RDS used to implement PostgreSQL database.
+- Implemented an automated CI/CD pipeline using GitHub Actions, which
+  deployed frontend assets to an S3 bucket, and built and deployed a new version
+  of the backend image to ECS.
+- Provisioned all the infrastructure in AWS as code using Terraform.
+- Used a Postgres Test Container and Jest to learn integration testing.
+- Used Playwright to learn end-to-end testing.
 
-CDN used to cache wesite to localised nodes.
+## Current
 
-Docker image configured and pushed to AWS.
-
-Highly available and autoscaling container cluster implemented.
-
-Integrated a load balancer to manage network traffic.
-
-PostgreSQL database implemented using AWS RDS.
-
-Configured an automated CI/CD pipeline using GitHub Actions, orchestrating client-side updates to AWS.
-
-Note: The Bootstrap framework was used for the UI / UX. Why? Simply, because I hadn't used it before and utlimately allowed for the focus to remain the focus.
-
-## AWS Focus
-
-A Task was defined for multiple containers. This meant allocating cpu, memory, an image, networking type and IAM role.
-
-A Service was used to group tasks as well as check and fix an unhealthy tasks.
-
-A Cluster was created to logically group services (only one for this application) in my local region.
-
-End-point created to satisy Load Balancer healthcheck on AWS.
+Currently, I have removed the deployed application and re-doing this step using Infrastructure as Code (Terraform). In parallel, I am also creating migration scripts to create the database on application launch.
 
 ## Difficulties?
 
@@ -54,7 +48,9 @@ docker buildx build --platform=linux/amd64 -t < image id >.dkr.< region >.amazon
 
 ## Optimisations
 
-The Dockerfile was desgied with layer caching in mind for optimised / faster builds.
+The Dockerfile was designed with layer caching in mind for optimised / faster builds.
+
+---
 
 ## Useful Commands (for reference)
 

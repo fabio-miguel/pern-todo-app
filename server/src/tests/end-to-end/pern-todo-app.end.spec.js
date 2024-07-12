@@ -15,7 +15,6 @@ test.describe("PERN Todo App", () => {
   });
 
   test("should edit a todo", async ({ page }) => {
-    await page.pause();
     await page.fill("#todoInput", "Test Todo2");
     await page.click("#addTodoBtn");
 
@@ -28,7 +27,6 @@ test.describe("PERN Todo App", () => {
   });
 
   test("should delete a todo", async ({ page }) => {
-    await page.pause();
     await page.fill("#todoInput", "Todo to delete");
     await page.click("#addTodoBtn");
 
