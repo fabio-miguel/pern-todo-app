@@ -1,7 +1,6 @@
 const { playwrightStopDB } = require("./playwrightTestUtils");
 
 async function playwrightTeardown() {
-  console.log("deleting test database...");
   try {
     await playwrightStopDB();
   } catch (err) {
@@ -9,4 +8,4 @@ async function playwrightTeardown() {
   }
 }
 
-export default playwrightTeardown;
+module.exports = playwrightTeardown;

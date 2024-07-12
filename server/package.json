@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test jest",
+    "e2e": "npx playwright test",
     "start": "node src/app.js",
     "backend": "node src/app.js"
   },

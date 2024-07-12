@@ -12,14 +12,14 @@ function createServer(pool) {
 
   // Create a todo
   app.post("/todos", async (req, res) => {
-    console.log("creating todo");
+    console.log("Creating todo");
     try {
       const { description } = req.body;
       const newTodo = await pool.query(
         "INSERT INTO todo (description) VALUES($1) RETURNING *",
         [description]
       );
-      console.log("todo was created");
+      console.log("Todo was created");
       res
         .status(201)
         .location(`/todos/${newTodo.rows[0].id}`)

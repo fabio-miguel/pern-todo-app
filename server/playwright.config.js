@@ -13,12 +13,15 @@ require("dotenv").config();
 module.exports = defineConfig({
   /* Test files to run */
   testDir: "./src/tests/end-to-end",
-  /* Run tests in files in parallel - false, i.e. each test shares state with the next */
-  fullyParallel: false,
+  /* Run tests in files in parallel
+   * false - each test shares state with the next
+   * true - each test runs in its own isolated state
+   * */
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: "html",
+  reporter: [["html", { open: "never" }]],
   /* Setup database and server before testing */
   globalSetup: "./playwrightSetup.js",
   /* Remove database and server after testing */
@@ -35,20 +38,9 @@ module.exports = defineConfig({
       use: { ...devices["Desktop Chrome"] },
       testIgnore: "src/tests/end-to-end/demo-todo-app.spec.js",
     },
-    // {
-    //   name: "firefox",
-    //   use: { ...devices["Desktop Firefox"] },
-    //   dependencies: ["setup db"],
-    // },
-
-    // {
-    //   name: "webkit",
-    //   use: { ...devices["Desktop Safari"] },
-    //   dependencies: ["setup db"],
-    // },
   ],
 
-  /* Run your local dev server before starting the tests */
+  /* Run local client dev server before starting the tests */
   webServer: [
     {
       /* Run front-end */
